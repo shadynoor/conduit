@@ -1,0 +1,98 @@
+<div class="flex justify-center items-center mt-10">
+  <div class="flex">
+    <button
+      class="cursor-pointer flex items-center justify-center bg-[#a855f7] px-4 h-10 me-3 text-base font-medium text-white border border-[#a855f7] rounded-lg hover:bg-gray-100 hover:text-[#a855f7] disabled:bg-white disabled:text-[#a855f7]"
+      (click)="goToPage('previous')"
+      [routerLink]="'/home/' + (this.currentPage > 0 ? this.currentPage : 1)"
+      [queryParams]="
+        feedService.currentTag
+          ? { tag: feedService.currentTag }
+          : feedService.userFeedPage
+          ? { page: 'your-feed' }
+          : null
+      "
+      [disabled]="+this.currentPage == 0"
+    >
+      Previous
+    </button>
+
+    <button
+      class="cursor-pointer flex items-center justify-center bg-[#a855f7] px-4 h-10 me-3 text-base font-medium text-white border border-[#a855f7] rounded-lg hover:bg-gray-100 hover:text-[#a855f7] disabled:bg-white disabled:text-[#a855f7]"
+      (click)="goToPage('next')"
+      [routerLink]="
+        '/home/' +
+        (paginationLength > this.currentPage
+          ? +this.currentPage + 2
+          : paginationLength)
+      "
+      [queryParams]="
+        feedService.currentTag
+          ? { tag: feedService.currentTag }
+          : feedService.userFeedPage
+          ? { page: 'your-feed' }
+          : null
+      "
+      [disabled]="+this.currentPage + 1 == paginationLength"
+    >
+      Next
+    </button>
+
+    <!-- Next Previous Buttons -->
+
+    <!-- <div class="flex flex-col items-center">
+      <span class="text-sm text-gray-700 dark:text-gray-400">
+        Showing
+        <span class="font-semibold text-gray-900 dark:text-white">1</span> to
+        <span class="font-semibold text-gray-900 dark:text-white">10</span> of
+        <span class="font-semibold text-gray-900 dark:text-white">100</span>
+        Entries
+      </span>
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button
+          (click)="previous()"
+          [routerLink]="'/' + currentPage"
+          class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          <svg
+            class="w-3.5 h-3.5 me-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 5H1m0 0 4 4M1 5l4-4"
+            />
+          </svg>
+          Prev
+        </button>
+        <button
+          (click)="next()"
+          [routerLink]="'/' + (initialPage + 2)"
+          class="flex items-center justify-center px-4 h-10 text-base font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          Next
+          <svg
+            class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9"
+            />
+          </svg>
+        </button>
+      </div>
+    </div> -->
+  </div>
+</div>

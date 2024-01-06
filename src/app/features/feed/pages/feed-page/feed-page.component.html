@@ -1,0 +1,73 @@
+<app-navigator (userFeed)="openUserFeed($event)" />
+<div class="flex items-start">
+  <div class="w-4/5">
+    <!-- <div *ngIf="data">
+      @if (!tagsLoading) { @for (feed of data; track feed.slug) {
+      <app-feed [feed]="feed" />
+      } } @else {
+      <div class="flex justify-start items-center gap-2">
+        <h3 class="text-[32px]">Data Is Loading</h3>
+        <app-spinner class="mt-[10px]" [dimensions]="'32px'" />
+      </div>
+      <ngx-skeleton-loader
+        *ngFor="let _ of [].constructor(10)"
+        [count]="5"
+        appearance="line"
+      ></ngx-skeleton-loader>
+      }
+    </div> -->
+
+    <div class="mt-2">
+      @if (!tagsLoading && (feedLoading | async) && !userFeedLoading) {
+      <!-- If -->
+      @if (feeds?.length! > 0) {
+      <!-- For -->
+      @for (feed of feeds; track feed.slug) {
+      <app-feed *ngIf="feeds" [feed]="feed" (tag)="openTagFromPost($event)" />
+      }
+      <!-- Else -->
+      } @else {
+      <h1 *ngIf="userFeedPage" class="text-[32px]">
+        You Don't Follow Anyone yet!
+      </h1>
+      }
+      <!-- Else -->
+      } @else {
+      <div class="flex justify-start items-center gap-2">
+        <h3 class="text-[32px] mb-0">Data Is Loading</h3>
+        <app-spinner class="mt-[10px]" [dimensions]="'32px'" />
+      </div>
+      <ngx-skeleton-loader
+        *ngFor="let _ of [].constructor(10)"
+        [count]="5"
+        appearance="line"
+      ></ngx-skeleton-loader>
+      }
+    </div>
+    <app-pagination
+      *ngIf="feedLength > 1"
+      [paginationLength]="feedLength"
+      (selectedPage)="changePage($event)"
+      [initialPage]="initialPage"
+    ></app-pagination>
+  </div>
+
+  <ng-container *ngIf="tags$ | async as tags">
+    <div class="ms-5 flex items-center justify-start flex-wrap gap-1 w-1/5">
+      <h1 class="w-full text-[2rem] mb-2">Popular Tags</h1>
+
+      <div
+        [routerLink]="['/']"
+        [queryParams]="{ tag: tag }"
+        data-te-chip-init
+        data-te-ripple-init
+        class="[word-wrap: break-word] my-[5px] flex h-[24px] cursor-pointer items-center justify-between rounded-[16px] bg-[#eceff1] px-[12px] py-0 text-[13px] font-normal normal-case leading-loose text-[#4f4f4f] shadow-none transition-[opacity] duration-300 ease-linear hover:!shadow-none hover:bg-[#cacfd1] hover:text-[dark:bg-neutral-600] dark:bg-neutral-600 dark:text-neutral-200"
+        data-te-close="true"
+        *ngFor="let tag of tags.tags"
+        (click)="updateFeedTags(tag)"
+      >
+        {{ tag }}
+      </div>
+    </div>
+  </ng-container>
+</div>

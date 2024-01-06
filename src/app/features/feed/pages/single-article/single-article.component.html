@@ -1,0 +1,137 @@
+@if (isLoading | async) {
+<div class="flex justify-start items-center gap-2">
+  <h3 class="text-[32px] mb-0">Data Is Loading</h3>
+  <app-spinner class="mt-[10px]" [dimensions]="'32px'" />
+</div>
+} @else {
+<ng-container *ngIf="article$ | async as article">
+  <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white antialiased">
+    <div class="flex justify-between px-4 mx-auto max-w-screen-xl">
+      <article
+        class="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue"
+      >
+        <header class="mb-4 lg:mb-6 not-format">
+          <address class="flex items-center mb-6 not-italic">
+            <div class="inline-flex items-center mr-3 text-sm text-gray-900">
+              <img
+                class="mr-4 w-16 h-16 rounded-full"
+                [src]="article.author?.image"
+                alt="Jese Leos"
+              />
+              <div>
+                <a
+                  href="#"
+                  rel="author"
+                  class="text-xl font-bold text-gray-900"
+                  >{{ article.author?.username }}</a
+                >
+                <p class="text-base text-gray-500"></p>
+                <p class="text-base text-gray-500">
+                  <time pubdate>{{ article.createdAt | date }}</time>
+                </p>
+              </div>
+            </div>
+          </address>
+          <h1
+            class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl"
+          >
+            {{ article.title }}
+          </h1>
+        </header>
+        <p class="lead mb-5">
+          {{ article.description }}
+        </p>
+        <figure class="my-5">
+          <img
+            src="https://flowbite.s3.amazonaws.com/typography-plugin/typography-image-1.png"
+            alt=""
+            class="my-5"
+          />
+          <figcaption>{{ article.title }}</figcaption>
+        </figure>
+        <p>
+          {{ article.body }}
+        </p>
+        @if (article.tagList.length > 0) {
+        <h2 class="my-5"><strong>Tags</strong></h2>
+        <ol class="flex items-center justify-start gap-5 mb-5">
+          <li *ngFor="let tag of article.tagList" class="cursor-pointer">
+            #<strong [routerLink]="['/home/1']" [queryParams]="{ tag: tag }">{{
+              tag
+            }}</strong>
+          </li>
+        </ol>
+        }
+
+        <!-- Comments Section -->
+        <ng-container *ngIf="commentsState$ | async as commentsState">
+          <section class="not-format mt-5">
+            <div class="flex justify-between items-center mb-6">
+              <h2
+                class="text-lg lg:text-2xl font-bold text-gray-900"
+                *ngIf="commentsState.comments"
+              >
+                Discussion ({{ commentsState.comments.length }})
+              </h2>
+            </div>
+            <form class="mb-6" #form="ngForm" (ngSubmit)="addComment(form)">
+              <div>
+                <label for="comment" class="sr-only">Your comment</label>
+                <textarea
+                  id="comment"
+                  rows="6"
+                  class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 w-full focus:outline-none"
+                  placeholder="Write a comment..."
+                  required
+                  ngModel
+                  name="comment"
+                  [disabled]="!isUser"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                [disabled]="!isUser"
+                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-[#a855f7] border border-[#a855f7] bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
+              >
+                Post comment
+              </button>
+            </form>
+
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-lg lg:text-lg font-bold text-gray-900">
+                Are you a user ?
+                <a class="text-[#a855f7]" routerLink="/login">Login</a> or
+                <a class="text-[#a855f7]" routerLink="/register">Register</a>
+                to be able to add comment
+              </h2>
+            </div>
+            @for (comment of commentsState.comments; track comment.id) {
+            <article class="p-6 mb-6 text-base bg-white rounded-lg">
+              <footer class="flex justify-between items-center mb-2">
+                <div class="flex items-center">
+                  <p
+                    class="inline-flex items-center mr-3 font-semibold text-sm text-gray-900"
+                  >
+                    <img
+                      class="mr-2 w-6 h-6 rounded-full"
+                      [src]="comment.author.image"
+                      alt="User"
+                    />{{ comment.author.username }}
+                  </p>
+                  <p class="text-sm text-gray-600">
+                    <time pubdate>{{ comment.createdAt | date }}</time>
+                  </p>
+                </div>
+              </footer>
+              <p>
+                {{ comment.body }}
+              </p>
+            </article>
+            }
+          </section>
+        </ng-container>
+      </article>
+    </div>
+  </main>
+</ng-container>
+}

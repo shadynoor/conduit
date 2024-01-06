@@ -1,0 +1,101 @@
+@defer {
+<ng-container *ngIf="profile">
+  <!-- <div>
+    {{ profile.username }}
+  </div>
+  <div>
+    <button
+      *ngIf="!currentProfile && !profile.following"
+      (click)="followUser(profile)"
+    >
+      Follow
+    </button>
+    <button
+      *ngIf="!currentProfile && profile.following"
+      (click)="followUser(profile)"
+    >
+      Unfollow
+    </button>
+  </div> -->
+
+  <div
+    class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+  >
+    <div class="flex flex-col items-center pb-10">
+      <img
+        class="w-12 h-12 mt-3 mb-3 rounded-full shadow-lg"
+        [src]="
+          profile.image
+            ? profile.image
+            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Windows_10_Default_Profile_Picture.svg/2048px-Windows_10_Default_Profile_Picture.svg.png'
+        "
+        alt="img"
+      />
+      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+        {{ profile.username }}
+      </h5>
+      <span class="text-sm text-gray-500 dark:text-gray-400">{{
+        profile.bio ? profile.bio : "User has no bio yet"
+      }}</span>
+      <div class="flex mt-4 md:mt-6">
+        <a
+          (click)="!currentProfile ? followUser(profile) : editProfile(profile)"
+          class="inline-flex cursor-pointer items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          [ngClass]="{
+            'dark:bg-red-600 dark:hover:bg-red-700': profile.following
+          }"
+          >{{
+            currentProfile
+              ? "Edit Profile"
+              : !profile.following
+              ? "Follow"
+              : "Unfollow"
+          }}</a
+        >
+      </div>
+    </div>
+  </div>
+  <h1 class="w-full text-[2rem] mb-2 mt-8 h1">
+    {{ !currentProfile ? "User Articles" : "Your Articles" }}
+  </h1>
+  @if (!(postsLoading$ | async)) {
+  <!-- if -->
+  @if (userPosts?.length! > 0) {
+  <!-- For -->
+  @for (post of userPosts; track post.id) {
+  <app-feed [feed]="post" />
+  }
+  <!-- Else -->
+  } @else {
+  <h1 class="text-[24px]">You Don't have any Article Yet</h1>
+  }
+
+  <!-- Else -->
+  } @else {
+  <div class="flex justify-start items-center gap-2">
+    <h3 class="text-[32px] mb-0">Data Is Loading</h3>
+    <app-spinner class="mt-[10px]" [dimensions]="'32px'" />
+  </div>
+  <ngx-skeleton-loader
+    *ngFor="let _ of [].constructor(5)"
+    [count]="5"
+    appearance="line"
+  ></ngx-skeleton-loader>
+  }
+</ng-container>
+
+<!-- @else {
+<ng-container *ngIf="profile$ | async as profile">
+  <div>
+    {{ profile.profile.username }}
+  </div>
+</ng-container>
+
+}  -->
+
+} @placeholder (minimum 1000ms) {
+<div class="flex justify-start items-center gap-2">
+  <h3 class="text-[32px] mb-0">Loading Profile</h3>
+  <app-spinner class="mt-[10px]" [dimensions]="'32px'" />
+</div>
+}

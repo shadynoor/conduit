@@ -1,0 +1,15 @@
+<div class="dialog">
+  <dynamic-form-builder
+    [formConfig]="myInputsArr"
+    (getFormData)="getFormValue($event)"
+    [inputTagClasses]="
+      'bg-gray-200 mb-3 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500'
+    "
+    [buttonClasses]="
+      'mt-3 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded'
+    "
+    [buttonText]="'Update'"
+    [inputTagLabelClasses]="'text-[#a855f7]'"
+    [requiredStarClasses]="'text-[red]'"
+  ></dynamic-form-builder>
+</div>

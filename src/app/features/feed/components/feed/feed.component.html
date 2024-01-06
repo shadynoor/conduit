@@ -1,0 +1,56 @@
+<div class="max-w-sm w-full lg:max-w-full" *ngIf="feed">
+  <div
+    class="border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"
+  >
+    <div class="mb-8 cursor-pointer" [routerLink]="'/articles/' + feed.slug">
+      <!-- <p class="text-sm text-gray-600 flex items-center">
+        <svg
+          class="fill-current text-gray-500 w-3 h-3 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path
+            d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"
+          />
+        </svg>
+        Members only
+      </p> -->
+      <div class="text-gray-900 font-bold text-xl mb-2">
+        {{ feed.title }}
+      </div>
+      <p class="text-gray-700 text-base">
+        {{ feed.description }}
+      </p>
+    </div>
+    <div class="flex items-center justify-end gap-1">
+      <div
+        data-te-chip-init
+        data-te-ripple-init
+        class="[word-wrap: break-word] my-[5px] flex h-[24px] cursor-pointer items-center justify-between rounded-[16px] bg-[#eceff1] px-[12px] py-0 text-[13px] font-normal normal-case leading-loose text-[#4f4f4f] shadow-none transition-[opacity] duration-300 ease-linear hover:!shadow-none hover:bg-[#cacfd1] dark:bg-neutral-600 dark:text-neutral-200"
+        data-te-close="true"
+        *ngFor="let tag of feed.tagList"
+        (click)="openTag(tag)"
+        [routerLink]="['/']"
+        [queryParams]="{ tag: tag }"
+      >
+        {{ tag }}
+      </div>
+    </div>
+    <div
+      class="flex items-center cursor-pointer"
+      [routerLink]="['/profile/' + feed.author.username]"
+    >
+      <img
+        class="w-10 h-10 rounded-full mr-4"
+        [src]="feed.author.image"
+        alt="Avatar of Jonathan Reinink"
+      />
+      <div class="text-sm">
+        <p class="text-gray-900 leading-none">
+          {{ feed.author.username }}
+        </p>
+        <p class="text-gray-600">{{ feed.updatedAt | date }}</p>
+      </div>
+    </div>
+  </div>
+</div>

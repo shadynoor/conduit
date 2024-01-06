@@ -1,0 +1,28 @@
+<form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" [class]="formClass">
+  <div *ngFor="let field of formConfig">
+    <label [class]="labelClass" [for]="field.name">{{ field.label }}</label>
+    <input
+      [type]="field.type || 'text'"
+      [name]="field.name"
+      [id]="field.name"
+      [formControlName]="field.name"
+      [placeholder]="field.placeholder"
+      class="bg-gray-200 mb-3 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+      [class]="inputClass"
+    />
+  </div>
+  <app-error-msg *ngIf="error" [errorObj]="error"></app-error-msg>
+  <div class="flex items-center gap-2">
+    <button
+      type="submit"
+      [class]="buttonClass"
+      [disabled]="isDisabled"
+      class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+    >
+      {{ buttonText }}
+    </button>
+    <div class="spinner" *ngIf="isDisabled">
+      <app-spinner></app-spinner>
+    </div>
+  </div>
+</form>
